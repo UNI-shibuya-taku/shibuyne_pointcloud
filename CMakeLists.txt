@@ -30,7 +30,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 # find_package(OpenCV 3 REQUIRED)
 # find_package(OpenCV 4.2.0 REQUIRED) # add
-# find_package(PCL REQUIRED)
+find_package(PCL REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
@@ -144,7 +144,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -198,6 +198,19 @@ target_link_libraries(lcl_
 	${OpenCV_LIBRARIES}
 	${PCL_LIBRARIES}
 )
+
+add_executable(sq_curvature_ src/sq_curvature_.cpp)
+target_link_libraries(sq_curvature_
+	${catkin_LIBRARIES}
+	# ${OpenCV_LIBRARIES}
+	${PCL_LIBRARIES}
+)
+# add_executable(normal_estimater src/normal_estimater.cpp)
+# target_link_libraries(normal_estimater
+# 	${catkin_LIBRARIES}
+# 	${OpenCV_LIBRARIES}
+# 	${PCL_LIBRARIES}
+# )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
