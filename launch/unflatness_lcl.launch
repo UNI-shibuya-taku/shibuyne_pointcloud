@@ -1,39 +1,38 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find shibuyne_pointcloud)/config/normal_lcl.rviz" /> -->
-  <!-- <include file="$(find unflatness_evaluator)/launch/unflatness_calculator.launch"/> -->
-	
+	<!-- rviz -->
+	<!-- /scan -> /unflatness/scan -->
+  <include file="$(find unflatness_evaluator)/launch/fast_unflatness_calculator.launch"/>
+  <!-- <include file="$(find dynamic_cloud_detector)/launch/sq_dynamic_cloud_detector.launch"/> -->
+  <!-- <include file="$(find ransac_ground_filter)/launch/ground_points_filter.launch"/> -->
+
 	<!--Transform-->
 	<!-- <node pkg="tf" type="static_transform_publisher" name="centerlaser_transform" args="0 0 0 0.5235 0 0 centerlaser_ centerlaser2_ 1000" /> -->
 	<node pkg="tf" type="static_transform_publisher" name="centerlaser_transform" args="0 0 0 0 0 0 base_link centerlaser 100" />
 
 	<!-- /scan -> /cloud -->
   <node name="sq_lidar"  pkg="sq_lidar" type="sq_lidar">
-		<remap from="/scan" to="/sq_lidar/scan"/>
+		<remap from="/scan" to="/shibuyne_pointcloud/unflatness"/>
 		<!-- <remap from="/scan" to="/sq_lidar/scan"/> -->
 		<remap from="/cloud" to="/scan_to_cloud"/>
-  </node>
+    </node>
 
 	<!--Transform PointCloud-->
 	<!-- /cloud -> cloud_tf -->
 	<node pkg="shibuyne_pointcloud" type="transform_pointcloud_" name="transform_pointcloud_">
 		<!-- centerlaser_にすると回転しない -->
-		<!-- <param name="target_frame" type="string" value="centerlaser_"/> -->
 		<remap from="/cloud" to="/scan_to_cloud"/>
 		<!-- <param name="target_frame" type="string" value="sqlidar_link"/> -->
 		<param name="target_frame" type="string" value="base_link"/>
+		<!-- <param name="target_frame" type="string" value="centerlaser_"/> -->
 	</node>
 
 	<!--lcl-->
 	<!-- /cloud_transformed -> /cloud/lcl -->
 	<node name="lcl_"  pkg="shibuyne_pointcloud" type="lcl_">
-		<param name="save_num" type="int" value="100"/>
+		<param name="save_num" type="int" value="150"/>
         <remap from="/cloud" to="/cloud/tf" />
-        <!-- <remap from="/cloud" to="/cloud/normals" /> -->
-		<!-- <remap from="/odom" to="/sq_lidar/odom" /> -->
 		<remap from="/odom" to="/odom/complement" />
 	</node>
 
-  <!-- <node name="sq_curvature_"  pkg="shibuyne_pointcloud" type="sq_curvature_" output="screen">
-    </node> -->
 </launch>

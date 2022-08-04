@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find shibuyne_pointcloud)/config/normal_lcl.rviz" /> -->
-  <!-- <include file="$(find unflatness_evaluator)/launch/unflatness_calculator.launch"/> -->
+  <include file="$(find unflatness_evaluator)/launch/fast_unflatness_calculator.launch"/>
+  <include file="$(find point_cloud_storer)/launch/point_cloud_store.launch"/>
 	
 	<!--Transform-->
 	<!-- <node pkg="tf" type="static_transform_publisher" name="centerlaser_transform" args="0 0 0 0.5235 0 0 centerlaser_ centerlaser2_ 1000" /> -->
@@ -9,10 +9,10 @@
 
 	<!-- /scan -> /cloud -->
   <node name="sq_lidar"  pkg="sq_lidar" type="sq_lidar">
-		<remap from="/scan" to="/sq_lidar/scan"/>
+		<remap from="/scan" to="/shibuyne_pointcloud/unflatness"/>
 		<!-- <remap from="/scan" to="/sq_lidar/scan"/> -->
 		<remap from="/cloud" to="/scan_to_cloud"/>
-  </node>
+    </node>
 
 	<!--Transform PointCloud-->
 	<!-- /cloud -> cloud_tf -->
@@ -26,14 +26,17 @@
 
 	<!--lcl-->
 	<!-- /cloud_transformed -> /cloud/lcl -->
-	<node name="lcl_"  pkg="shibuyne_pointcloud" type="lcl_">
+	<node name="lcl_"  pkg="shibuyne_pointcloud" type="lcl_" >
 		<param name="save_num" type="int" value="100"/>
-        <remap from="/cloud" to="/cloud/tf" />
-        <!-- <remap from="/cloud" to="/cloud/normals" /> -->
+    <remap from="/cloud" to="/cloud/tf" />
+		<!-- <remap from="/odom" to="/odom/complement" /> -->
 		<!-- <remap from="/odom" to="/sq_lidar/odom" /> -->
-		<remap from="/odom" to="/odom/complement" />
 	</node>
+	
+	<!--rm_ground_lcl-->
+	<!-- <node name="rm_ground_lcl_"  pkg="nagayne_pointcloud_" type="rm_ground_lcl_"> -->
+	<!-- 	<param name="save_num" type="int" value="100"/> -->
+	<!-- 	<remap from="/cloud" to="/cloud/tf" /> -->
+	<!-- </node> -->
 
-  <!-- <node name="sq_curvature_"  pkg="shibuyne_pointcloud" type="sq_curvature_" output="screen">
-    </node> -->
 </launch>

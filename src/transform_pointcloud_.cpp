@@ -37,9 +37,13 @@ PointCloudTransform::PointCloudTransform()
 }
 
 void PointCloudTransform::Callback(const sensor_msgs::PointCloud2ConstPtr &msg){
-		sensor_msgs::convertPointCloud2ToPointCloud(*msg, pc_);
-		t = msg->header.stamp;
-		string source_frame = msg->header.frame_id;
+  std::cout << "------transform callback-----------" << std::endl;
+  std::cout << "msg size: " << msg->data.size() << std::endl; // 8340
+	sensor_msgs::convertPointCloud2ToPointCloud(*msg, pc_);
+  std::cout << "[cloud] size: " << pc_.points.size() << std::endl; // 417
+	
+	t = msg->header.stamp;
+	string source_frame = msg->header.frame_id;
 
 	sensor_msgs::PointCloud pc_trans;
 	sensor_msgs::PointCloud2 pc2_trans;

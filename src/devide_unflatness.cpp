@@ -21,23 +21,7 @@
 
 using namespace std;
 
-// typedef pcl::PointNormal PointA;
-// typedef pcl::PointCloud<PointA> CloudA;
-// typedef pcl::PointCloud<PointA>::Ptr CloudAPtr;
-
-// typedef pcl::PointXYZI PointA;
-// typedef pcl::PointCloud<PointA> CloudA;
-// typedef pcl::PointCloud<PointA>::Ptr CloudAPtr;
-    
-// typedef pcl::PointNormal PointNormal;
-// typedef pcl::PointCloud<PointNormal> CloudNormal;
-// typedef pcl::PointCloud<PointNormal>::Ptr CloudNormalPtr;
-    
-// typedef pcl::PointXYZINormal PointA;
-// typedef pcl::PointCloud<PointA> CloudA;
-// typedef pcl::PointCloud<PointA>::Ptr CloudAPtr;
-
-typedef pcl::PointXYZINormal PointA;
+typedef pcl::PointXYZI PointA;
 typedef pcl::PointCloud<PointA> CloudA;
 typedef pcl::PointCloud<PointA>::Ptr CloudAPtr;
 
@@ -94,15 +78,13 @@ void pc_callback(const sensor_msgs::PointCloud2ConstPtr msg)
     cout<<"------------"<<endl;
     CloudAPtr single_pc_(new CloudA);
     pcl::fromROSMsg(*msg, *single_pc_);
-    std::cout << "single pc_ size: " << single_pc_->points.size() << std::endl;
+    cout<<"single_pc_ : " <<single_pc_->points.size()<<endl;
 
     CloudAPtr output_pc (new CloudA);
-    // single_pc_ -> output_pc
     pcl::transformPointCloud(*single_pc_, *output_pc, transform_matrix);
 
     CloudAPtr output_pc_after (new CloudA);
 
-    // output_pc -> output_pc_after
     for(size_t i=0;i<single_pc_->points.size();i++){
         double distance = sqrt(pow(single_pc_->points[i].x, 2)+
                 pow(single_pc_->points[i].y, 2)+
@@ -114,10 +96,11 @@ void pc_callback(const sensor_msgs::PointCloud2ConstPtr msg)
         }
     }
 
-    // output_pc_after -> output_save_pc
     CloudAPtr output_save_pc (new CloudA);
     Eigen::Matrix4f inverse_transform_matrix = transform_matrix.inverse();
     pcl::transformPointCloud(*output_pc_after, *output_save_pc, inverse_transform_matrix);
+    cout<<"output_save_pc : " << output_save_pc->points.size()<<endl;
+
 
     if(count_ < save_num){
         *save_pc_ += *output_save_pc;
@@ -133,16 +116,18 @@ void pc_callback(const sensor_msgs::PointCloud2ConstPtr msg)
     save_pc_->header = single_pc_->header;
     save_pc_->width = save_pc_->points.size();
     save_pc_->height = 1;
+    cout << "cloud_lcl header: " << save_pc_->header << endl;
     // save_pc_->header.stamp = ros::Time::now();
     sensor_msgs::PointCloud2 pc_;
     pcl::toROSMsg(*save_pc_, pc_);
     pub.publish(pc_);
     // pub.publish(save_pc_);
-    std::cout << "save_pc_ size: " << save_pc_->points.size() << std::endl;
+    cout << "save_pc_ size: " << save_pc_->points.size() << endl;
     // pc_.header.stamp = ros::Time::now();
     // pc_.header.frame_id = msg->header.frame_id;
     // pc_.header.frame_id = "/odom3d";	//変更
     // pub.publish(pc_);
+    cout << "publish cloud_lcl " << endl;
     // cout<<"cloud_lcl header" << pc_.header <<endl;
 
     count_++;
@@ -155,7 +140,7 @@ int main(int argc, char** argv)
 	ros::NodeHandle nh("~");
 	nh.getParam("save_num", save_num);
 
-    ros::Subscriber sub_pc = n.subscribe("/cloud", 30, pc_callback); // cloud/tf
+    ros::Subscriber sub_pc = n.subscribe("/cloud", 30, pc_callback);
     ros::Subscriber sub_lcl = n.subscribe("/odom", 30, lcl_callback);
     pub = n.advertise<sensor_msgs::PointCloud2>("/cloud/lcl", 30);
 

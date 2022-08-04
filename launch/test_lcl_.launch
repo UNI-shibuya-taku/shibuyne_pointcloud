@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+	<!--Transform-->
+	<!-- <node pkg="tf" type="static_transform_publisher" name="centerlaser_transform" args="0 0 0 0.5235 0 0 centerlaser_ centerlaser2_ 1000" /> -->
+	<node pkg="tf" type="static_transform_publisher" name="centerlaser_transform" args="0 0 0 0 0 0 base_link centerlaser 100" />
+
+	<!--Transform PointCloud-->
+    <node pkg="shibuyne_pointcloud" type="transform_pointcloud_" name="transform_pointcloud_">
+    <!-- centerlaser_にすると回転しない -->
+        <!-- <param name="target_frame" type="string" value="centerlaser_"/> -->
+        <!-- <param name="target_frame" type="string" value="centerlaser"/> -->
+        <param name="target_frame" type="string" value="sqlidar_link"/>
+	</node>
+
+	<!--lcl-->
+	<node name="lcl_"  pkg="shibuyne_pointcloud" type="lcl_" output="screen">
+		<param name="save_num" type="int" value="150"/>
+		<!-- /cloud/tf -->
+        <remap from="/cloud" to="/cloud/tf" />
+		<!-- <remap from="/cloud" to="/cloud/transformed" /> -->
+		<!-- sq2直に持ってきたやつはodomのtopic名が違うので注意 -->
+		<remap from="/odom" to="/sq_lidar/odom" />
+		<!-- <remap from="/odom" to="/odom/complement" /> -->
+	</node>
+
+    <node name="sq_lidar"  pkg="sq_lidar" type="sq_lidar" output="screen">
+		<remap from="/scan" to="/sq_lidar/scan"/>
+		<!-- <remap from="/scan" to="/shibuyne_pointcloud/unflatness"/> -->
+    </node>
+	
+	<!--rm_ground_lcl-->
+	<!-- <node name="rm_ground_lcl_"  pkg="nagayne_pointcloud_" type="rm_ground_lcl_"> -->
+	<!-- 	<param name="save_num" type="int" value="100"/> -->
+	<!-- 	<remap from="/cloud" to="/cloud/tf" /> -->
+	<!-- </node> -->
+
+</launch>
