@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find velodyne_height_map)/launch/lcl_height.launch"/>
+  <include file="$(find dynamic_cloud_detector)/launch/lcl_compare_detector.launch"/>
+
+	<!--Transform-->
+	<!-- <node pkg="tf" type="static_transform_publisher" name="centerlaser_transform" args="0 0 0 0 0 0 base_link centerlaser 100" /> -->
+
+	<!-- スキャンライン変換を忘れずに -->
+	<!--lcl-->
+	<!-- /cloud_transformed -> /cloud/lcl -->
+	<node name="lcl_compared"  pkg="shibuyne_pointcloud" type="lcl_">
+		<remap from="/cloud" to="/cloud/tf"/>
+		<remap from="/odom" to="/odom/complement"/>
+		<remap from="/cloud/lcl" to="/cloud/lcl/compared"/>
+		<param name="save_num" type="int" value="60"/>
+		<param name="z_threshold" type="double" value="2.9"/>
+		<!-- <param name="z_threshold" type="double" value="40.0"/> -->
+	</node>
+
+</launch>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find shibuyne_pointcloud)/config/normal_lcl.rviz" /> -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find shibuyne_pointcloud)/config/normal_lcl.rviz" />
   <!-- <include file="$(find unflatness_evaluator)/launch/unflatness_calculator.launch"/> -->
 	
 	<!--Transform-->
@@ -31,6 +31,7 @@
         <remap from="/cloud" to="/cloud/tf" />
         <!-- <remap from="/cloud" to="/cloud/normals" /> -->
 		<!-- <remap from="/odom" to="/sq_lidar/odom" /> -->
+		<!-- <param name="z_threshold" value="2.9"/> -->
 		<remap from="/odom" to="/odom/complement" />
 	</node>
 
