@@ -43,8 +43,9 @@
 		<!-- <param name="save_num" type="int" value="50"/> -->
 		<!-- <param name="save_num" type="int" value="80"/> -->
 		<param name="save_num" type="int" value="90"/>
-		<param name="z_threshold" type="double" value="2.9"/>
-		<!-- <param name="z_threshold" type="double" value="50.0"/> -->
+		<param name="z_threshold" type="double" value="50.0"/>
+		<!-- <param name="z_threshold" type="double" value="2.9"/> -->
+		<!-- <param name="z_threshold" type="double" value="2.7"/> -->
 		<!-- <param name="z_threshold_max" type="double" value="2.9"/> -->
 		<remap from="/cloud" to="/cloud/tf"/>
 		<remap from="/odom" to="/odom/complement"/>

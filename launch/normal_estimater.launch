@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 小さくするとエッジ判定される点が増える -->
+  <arg name="CURVATURE_THRESHOLD" default="0.1"/>
+
+  <node name="normal_estimater"  pkg="shibuyne_pointcloud" type="normal_estimater">
+		<remap from="/cloud" to="/scanline_life_evaluator/saved_cloud"/>
+		<remap from="/shibuyne_pointcloud/edge_cloud" to="/shibuyne_pointcloud/edge/saved_cloud"/>
+		<remap from="/shibuyne_pointcloud/normal_vector" to="/shibuyne_pointcloud/normal_vector/saved_cloud"/>
+    <param name="CURVATURE_THRESHOLD" value="$(arg CURVATURE_THRESHOLD)"/>
+  </node>
+
+  <node name="normal_estimater_lcl"  pkg="shibuyne_pointcloud" type="normal_estimater">
+		<remap from="/cloud" to="/cloud/lcl"/>
+		<remap from="/shibuyne_pointcloud/edge_cloud" to="/shibuyne_pointcloud/edge/lcl"/>
+		<remap from="/shibuyne_pointcloud/normal_vector" to="/shibuyne_pointcloud/normal_vector/lcl"/>
+    <param name="CURVATURE_THRESHOLD" value="$(arg CURVATURE_THRESHOLD)"/>
+  </node>
+
+  <!-- <node pkg="rviz" type="rviz" name="rviz500" args="-d $(find shibuyne_pointcloud)/config/normal_lcl.rviz" />
+  <node pkg="rviz" type="rviz" name="rviz501" args="-d $(find shibuyne_pointcloud)/config/normal_saved_cloud.rviz" /> -->
+
+</launch>

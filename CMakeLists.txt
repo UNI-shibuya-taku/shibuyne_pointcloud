@@ -205,12 +205,13 @@ target_link_libraries(sq_curvature_
 	# ${OpenCV_LIBRARIES}
 	${PCL_LIBRARIES}
 )
-# add_executable(normal_estimater src/normal_estimater.cpp)
-# target_link_libraries(normal_estimater
-# 	${catkin_LIBRARIES}
-# 	${OpenCV_LIBRARIES}
-# 	${PCL_LIBRARIES}
-# )
+
+add_executable(normal_estimater src/normal_estimater.cpp)
+target_link_libraries(normal_estimater
+	${catkin_LIBRARIES}
+	${OpenCV_LIBRARIES}
+	${PCL_LIBRARIES}
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

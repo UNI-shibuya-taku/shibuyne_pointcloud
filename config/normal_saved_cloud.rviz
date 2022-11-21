@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /box1
+        - /saved_cloud1
         - /edge1
       Splitter Ratio: 0.5
     Tree Height: 746
@@ -570,14 +570,14 @@ Visualization Manager:
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
-      Name: lcl
+      Name: saved_cloud
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.019999999552965164
       Style: Flat Squares
-      Topic: /cloud/lcl
+      Topic: /scanline_life_evaluator/saved_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -605,7 +605,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.03999999910593033
       Style: Flat Squares
-      Topic: /shibuyne_pointcloud/edge/lcl
+      Topic: /shibuyne_pointcloud/edge/saved_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -638,7 +638,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 27.445514678955078
+      Distance: 25.22620964050293
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -654,9 +654,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6847949624061584
+      Pitch: 0.7197946310043335
       Target Frame: <Fixed Frame>
-      Yaw: 3.9123010635375977
+      Yaw: 3.8473072052001953
     Saved: ~
 Window Geometry:
   Displays:
@@ -676,5 +676,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 960
-  X: 1920
+  X: 2880
   Y: 0
